@@ -1,0 +1,70 @@
+.home {
+  margin-top: 0 !important;
+  display: grid;
+  display: -ms-grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 400px auto;
+  margin: auto;
+  position: absolute;
+  background-color: #025;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.navbar {
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+
+.navbar-default {
+  border: none !important;
+}
+
+.navbar a {
+  color: whitesmoke !important;
+}
+
+.banner {
+  grid-column: 1/3;
+  overflow: hidden;
+  background-image: url("./img/banner.jpg");
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+}
+
+.bannerimage {
+  width: 450px;
+  color: whitesmoke;
+  font-size: 64px;
+  font-family: "Ubuntu", sans-serif;
+  letter-spacing: 3px;
+  font-weight: 400;
+  padding-bottom: 30px;
+  padding-top: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 5px;
+  margin: auto;
+  background-color: rgba(0, 0, 0, 0.35);
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.bannerimage:focus-within {
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.main {
+  padding: 10px;
+}
+
+.side {
+  padding: 10px;
+}
+/* .banner:hover .bannerimage,
+.banner:focus .bannerimage {
+  transform: scale(1.03);
+} */

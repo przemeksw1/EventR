@@ -1,0 +1,33 @@
+.eventpost {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  color: whitesmoke;
+  text-align: left;
+  margin: 10px;
+  padding: 10px;
+  border-bottom: 1px dashed #555555;
+  background-color: #147;
+  /* grid-template-rows:  */
+}
+
+.postimage {
+  background-image: url("./img/postimage.jpg");
+  background-size: cover;
+  width: 150px;
+  height: 150px;
+  grid-row: 1/4;
+}
+
+.postname {
+  grid-row: 1;
+  font-size: 20px;
+}
+
+.postdateandlocale {
+  grid-row: 2;
+  font-size: 13px;
+}
+
+.posttext {
+  grid-row: 3;
+}
