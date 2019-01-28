@@ -7,33 +7,52 @@ import EventRNavbar from "./components/EventRNavbar";
 class App extends Component {
   state = {
     isUserLoggedIn: false,
-    users: [{ email: "sznurek05@gmail.com", password: "drucik05" }]
+    users: [],
+    events: []
   };
 
   logUserIn = user => {
-    let valid = false;
-    this.state.users.forEach(element => {
-      if (element.email === user.email && element.password === user.password)
-        valid = true;
-    });
-    if (!valid) alert("Nieprawidłowe dane logowania!");
-    this.setState({ isUserLoggedIn: valid });
-    //window.location.href = "/";
+    this.setState({ isUserLoggedIn: true });
+    this.addUser(user);
   };
 
   logUserOut = () => {
     this.setState({ isUserLoggedIn: false });
-    window.location.href = "/";
   };
 
   addUser = user => {
-    var users = this.state.users;
-    users.push(user);
-    this.setState({ users });
-    //window.location.href = "/";
+    fetch("http://localhost:52719/api/uzytkownicies", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user)
+    });
+    this.getUsers();
+  };
+
+  addEvent = event => {
+    fetch("http://localhost:52719/api/wydarzenias", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: event
+    });
+    this.getEvents();
+  };
+
+  getUsers = () => {
+    fetch("http://localhost:52719/api/uzytkownicies/")
+      .then(res => res.json())
+      .then(users => this.setState(users));
+  };
+
+  getEvents = () => {
+    fetch("http://localhost:52719/api/wydarzenias/")
+      .then(res => res.json())
+      .then(events => this.setState(events));
   };
 
   render() {
+    this.getUsers();
+    this.getEvents();
     return (
       <div className="App">
         {console.log(window.location.href)}
@@ -41,7 +60,13 @@ class App extends Component {
           isUserLoggedIn={this.state.isUserLoggedIn}
           logUserOut={this.logUserOut}
         />
-        <Routes addUser={this.addUser} logUserIn={this.logUserIn} />
+        <Routes
+          addUser={this.addUser}
+          addEvent={this.addEvent}
+          logUserIn={this.logUserIn}
+          users={this.state.users}
+          events={this.state.events}
+        />
       </div>
     );
   }

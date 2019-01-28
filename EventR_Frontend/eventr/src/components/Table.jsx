@@ -4,10 +4,9 @@ import TableRow from "./TableRow";
 class Table extends Component {
   constructor(props) {
     super(props);
-    this.renderHeaders = this.renderHeaders.bind(this);
   }
 
-  renderHeaders() {
+  renderHeaders = () => {
     const heads = [];
     if (this.props.data.length > 0) {
       const keys = Object.keys(this.props.data[0]);
@@ -29,35 +28,11 @@ class Table extends Component {
           case "categoryId":
             header = "Kategoria";
             break;
-          case "isHidden":
-            header = "Ukryty";
-            break;
-          case "expertEmail":
-            header = "Mail eksperta";
-            break;
-          case "pricePln":
-            header = "Cena PLN";
-            break;
-          case "taxRate":
-            header = "Stopa podatkowa";
-            break;
-          case "discount":
-            header = "Zniżka";
-            break;
-          case "amountAvailable":
-            header = "Dostępne";
-            break;
           case "boughtTimes":
             header = "Kupiono";
             break;
           case "imageBase64":
             header = "Obrazek";
-            break;
-          case "superiorCategoryId":
-            header = "Kategoria nadrzędna";
-            break;
-          case "subCategories":
-            header = "Podkategorie";
             break;
           default:
             continue;
@@ -70,7 +45,7 @@ class Table extends Component {
       }
     }
     return heads;
-  }
+  };
 
   render() {
     return (
@@ -84,8 +59,6 @@ class Table extends Component {
               <TableRow
                 key={data.id}
                 rowData={data}
-                Auth={this.props.Auth}
-                apiUrl={this.props.apiUrl}
                 categories={this.props.categories}
                 updateData={this.props.updateData}
               />
