@@ -23,7 +23,18 @@ class Routes extends Component {
           path="/register"
           render={props => <Register {...props} addUser={this.props.addUser} />}
         />
-        <Route exact path="/admin" component={AdminPanel} />
+        <Route
+          exact
+          path="/admin"
+          render={props => (
+            <AdminPanel
+              {...props}
+              users={this.props.users}
+              events={this.props.events}
+            />
+          )}
+        />
+        } />
       </Switch>
     );
   }
