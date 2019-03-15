@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventRApi.Models.SeedConf;
 
 namespace EventRApi.Models
 {
@@ -16,5 +17,18 @@ namespace EventRApi.Models
         public DbSet<Komentarze> komentarze { get; set; }
         public DbSet<Grafiki> grafiki { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Wydarzenia>();
+            builder.Entity<Uzytkownicy>();
+            builder.Entity<Grafiki>();
+            builder.Entity<Komentarze>();
+            builder.Entity<Preferencje>();
+
+            builder.Seed();
+            base.OnModelCreating(builder);
+
+        }
     }
 }
