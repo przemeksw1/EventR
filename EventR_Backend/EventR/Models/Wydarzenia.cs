@@ -17,5 +17,7 @@ namespace EventRApi.Models
         public string Kategoria { get; set; }
         public char Status { get; set; }
         public string Tematyka { get; set; }
+
+        public virtual ICollection<Komentarze> Komentarzes { get; set; }
     }
 }

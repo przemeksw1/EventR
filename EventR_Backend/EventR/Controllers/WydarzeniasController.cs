@@ -36,8 +36,9 @@ namespace EventR.Controllers
                 return BadRequest(ModelState);
             }
 
-            var wydarzenia = await _context.wydarzenia.FindAsync(id);
+            //var wydarzenia = await _context.wydarzenia.FindAsync(id);
 
+            var wydarzenia = await Task.Run(() => _context.wydarzenia.Where(w => w.Id_Wydarzenia == id).Include(k=>k.Komentarzes));
             if (wydarzenia == null)
             {
                 return NotFound();

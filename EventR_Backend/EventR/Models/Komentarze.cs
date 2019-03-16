@@ -13,6 +13,6 @@ namespace EventRApi.Models
         [ForeignKey("Uzytkownicy")] public int Id_Autora { get; set; }
         [ForeignKey("Wydarzenia")] public int Id_Wydarzenia { get; set; }
         public string Tytul { get; set; }
-        public string Tresc { get; set; }
+        public string Tresc { get; set; }       
     }
 }
