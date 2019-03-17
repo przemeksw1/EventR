@@ -19,6 +19,7 @@ class EventPage extends Component {
   }
 
   render() {
+    const date = new Date(this.state.event.data);
     return (
       <div className="event-page">
         <div className="title-bar">{this.state.event.nazwa}</div>
@@ -27,8 +28,18 @@ class EventPage extends Component {
             " o tematyce " +
             this.state.event.tematyka}
           <br />
+          <b>
+            {date.toLocaleDateString("pl-PL") +
+              " o " +
+              date.getHours() +
+              ":" +
+              date.getHours()}
+          </b>
+          <br />
+          <br />
           {this.state.event.opis}
         </div>
+        <div className="event-image" />
       </div>
     );
   }
