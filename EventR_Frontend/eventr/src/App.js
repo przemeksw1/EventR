@@ -11,6 +11,11 @@ class App extends Component {
     events: []
   };
 
+  componentDidMount() {
+    this.getEvents();
+    this.getUsers();
+  }
+
   logUserIn = user => {
     this.setState({ isUserLoggedIn: true });
     this.addUser(user);
@@ -41,18 +46,18 @@ class App extends Component {
   getUsers = () => {
     fetch("http://localhost:52719/api/uzytkownicies/")
       .then(res => res.json())
-      .then(users => this.setState(users));
+      .then(users => {
+        this.setState({ users });
+      });
   };
 
   getEvents = () => {
     fetch("http://localhost:52719/api/wydarzenias/")
       .then(res => res.json())
-      .then(events => this.setState(events));
+      .then(events => this.setState({ events }));
   };
 
   render() {
-    this.getUsers();
-    this.getEvents();
     return (
       <div className="App">
         {console.log(window.location.href)}

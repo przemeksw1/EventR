@@ -25,7 +25,7 @@ class AdminPanel extends Component {
             {/*left side*/}
             <div className="panel panel-default">
               <div className="panel-body">
-                <h4>Tabels</h4>
+                <h4>Tabele</h4>
                 <ul className="nav nav-pills nav-stacked">
                   <li className="active">
                     <a

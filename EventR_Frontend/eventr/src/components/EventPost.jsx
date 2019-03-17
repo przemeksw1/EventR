@@ -9,12 +9,12 @@ class EventPost extends Component {
     return (
       <div className="eventpost">
         <div className="postimage" />
-        <div className="postname">{post.name}</div>
+        <div className="postname">{post.nazwa}</div>
         <div className="postdateandlocale">
           <Glyphicon glyph="calendar" />
-          {post.date}, {post.localization}
+          {new Date(post.data).toLocaleDateString("pl-PL")}
         </div>
-        <div className="posttext">{post.text}</div>
+        <div className="posttext">{post.opis}</div>
       </div>
     );
   }
