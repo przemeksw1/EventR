@@ -11,56 +11,56 @@ namespace EventR.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UzytkowniciesController : ControllerBase
+    public class EventsController : ControllerBase
     {
         private readonly Context _context;
 
-        public UzytkowniciesController(Context context)
+        public EventsController(Context context)
         {
             _context = context;
         }
 
-        // GET: api/Uzytkownicies
+        // GET: api/Events
         [HttpGet]
-        public IEnumerable<Uzytkownicy> Getuzytkownicy()
+        public IEnumerable<Event> GetAllEvents()
         {
-            return _context.uzytkownicy;
+            return _context.events;
         }
 
-        // GET: api/Uzytkownicies/5
+        // GET: api/Events/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUzytkownicy([FromRoute] int id)
+        public async Task<IActionResult> GetEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var uzytkownicy = await _context.uzytkownicy.FindAsync(id);
+            var events = await _context.events.FindAsync(id);
 
-            if (uzytkownicy == null)
+            if (events == null)
             {
                 return NotFound();
             }
 
-            return Ok(uzytkownicy);
+            return Ok(events);
         }
 
-        // PUT: api/Uzytkownicies/5
+        // PUT: api/Events/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUzytkownicy([FromRoute] int id, [FromBody] Uzytkownicy uzytkownicy)
+        public async Task<IActionResult> PutEvent([FromRoute] int id, [FromBody] Event _event)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != uzytkownicy.Id_Uytkownika)
+            if (id != _event.EventId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(uzytkownicy).State = EntityState.Modified;
+            _context.Entry(_event).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace EventR.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UzytkownicyExists(id))
+                if (!EventExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace EventR.Controllers
             return NoContent();
         }
 
-        // POST: api/Uzytkownicies
+        // POST: api/Events
         [HttpPost]
-        public async Task<IActionResult> PostUzytkownicy([FromBody] Uzytkownicy uzytkownicy)
+        public async Task<IActionResult> PostEvent([FromBody] Event _event)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.uzytkownicy.Add(uzytkownicy);
+            _context.events.Add(_event);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUzytkownicy", new { id = uzytkownicy.Id_Uytkownika }, uzytkownicy);
+            return CreatedAtAction("GetEvent", new { id = _event.EventId }, _event);
         }
 
-        // DELETE: api/Uzytkownicies/5
+        // DELETE: api/Events/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUzytkownicy([FromRoute] int id)
+        public async Task<IActionResult> DeleteEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var uzytkownicy = await _context.uzytkownicy.FindAsync(id);
-            if (uzytkownicy == null)
+            var events = await _context.events.FindAsync(id);
+            if (events == null)
             {
                 return NotFound();
             }
 
-            _context.uzytkownicy.Remove(uzytkownicy);
+            _context.events.Remove(events);
             await _context.SaveChangesAsync();
 
-            return Ok(uzytkownicy);
+            return Ok(events);
         }
 
-        private bool UzytkownicyExists(int id)
+        private bool EventExists(int id)
         {
-            return _context.uzytkownicy.Any(e => e.Id_Uytkownika == id);
+            return _context.events.Any(e => e.EventId == id);
         }
     }
 }

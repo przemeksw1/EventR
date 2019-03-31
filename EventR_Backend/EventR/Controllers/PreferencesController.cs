@@ -11,56 +11,56 @@ namespace EventR.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KomentarzesController : ControllerBase
+    public class PreferencesController : ControllerBase
     {
         private readonly Context _context;
 
-        public KomentarzesController(Context context)
+        public PreferencesController(Context context)
         {
             _context = context;
         }
 
-        // GET: api/Komentarzes
+        // GET: api/Preferences
         [HttpGet]
-        public IEnumerable<Komentarze> Getkomentarze()
+        public IEnumerable<Preference> GetAllPreferences()
         {
-            return _context.komentarze;
+            return _context.preferences;
         }
 
-        // GET: api/Komentarzes/5
+        // GET: api/Preferences/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetKomentarze([FromRoute] int id)
+        public async Task<IActionResult> GetPreference([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var komentarze = await _context.komentarze.FindAsync(id);
+            var preference = await _context.preferences.FindAsync(id);
 
-            if (komentarze == null)
+            if (preference == null)
             {
                 return NotFound();
             }
 
-            return Ok(komentarze);
+            return Ok(preference);
         }
 
-        // PUT: api/Komentarzes/5
+        // PUT: api/Preferences/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutKomentarze([FromRoute] int id, [FromBody] Komentarze komentarze)
+        public async Task<IActionResult> PutPreferences([FromRoute] int id, [FromBody] Preference preference)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != komentarze.Id_Komentarza)
+            if (id != preference.PreferenceId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(komentarze).State = EntityState.Modified;
+            _context.Entry(preference).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace EventR.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!KomentarzeExists(id))
+                if (!PreferenceExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace EventR.Controllers
             return NoContent();
         }
 
-        // POST: api/Komentarzes
+        // POST: api/Preferences
         [HttpPost]
-        public async Task<IActionResult> PostKomentarze([FromBody] Komentarze komentarze)
+        public async Task<IActionResult> PostPreference([FromBody] Preference preference)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.komentarze.Add(komentarze);
+            _context.preferences.Add(preference);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetKomentarze", new { id = komentarze.Id_Komentarza }, komentarze);
+            return CreatedAtAction("GetPreference", new { id = preference.PreferenceId }, preference);
         }
 
-        // DELETE: api/Komentarzes/5
+        // DELETE: api/Preferences/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteKomentarze([FromRoute] int id)
+        public async Task<IActionResult> DeletePreference([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var komentarze = await _context.komentarze.FindAsync(id);
-            if (komentarze == null)
+            var preference = await _context.preferences.FindAsync(id);
+            if (preference == null)
             {
                 return NotFound();
             }
 
-            _context.komentarze.Remove(komentarze);
+            _context.preferences.Remove(preference);
             await _context.SaveChangesAsync();
 
-            return Ok(komentarze);
+            return Ok(preference);
         }
 
-        private bool KomentarzeExists(int id)
+        private bool PreferenceExists(int id)
         {
-            return _context.komentarze.Any(e => e.Id_Komentarza == id);
+            return _context.preferences.Any(e => e.PreferenceId == id);
         }
     }
 }

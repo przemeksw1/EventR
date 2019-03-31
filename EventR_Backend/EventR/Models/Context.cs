@@ -11,20 +11,20 @@ namespace EventRApi.Models
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
 
-        public DbSet<Uzytkownicy> uzytkownicy { get; set; }
-        public DbSet<Preferencje> preferencje { get; set; }
-        public DbSet<Wydarzenia> wydarzenia { get; set; }
-        public DbSet<Komentarze> komentarze { get; set; }
-        public DbSet<Grafiki> grafiki { get; set; }
+        public DbSet<User> users { get; set; }
+        public DbSet<Preference> preferences { get; set; }
+        public DbSet<Event> events { get; set; }
+        public DbSet<Comment> comments { get; set; }
+        public DbSet<Image> images { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Wydarzenia>();
-            builder.Entity<Uzytkownicy>();
-            builder.Entity<Grafiki>();
-            builder.Entity<Komentarze>();
-            builder.Entity<Preferencje>();
+            builder.Entity<Event>();
+            builder.Entity<User>();
+            builder.Entity<Image>();
+            builder.Entity<Comment>();
+            builder.Entity<Preference>();
 
             builder.Seed();
             base.OnModelCreating(builder);
