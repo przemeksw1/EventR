@@ -11,56 +11,56 @@ namespace EventR.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GrafikisController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly Context _context;
 
-        public GrafikisController(Context context)
+        public UsersController(Context context)
         {
             _context = context;
         }
 
-        // GET: api/Grafikis
+        // GET: api/Users
         [HttpGet]
-        public IEnumerable<Grafiki> Getgrafiki()
+        public IEnumerable<User> GetAllUsers()
         {
-            return _context.grafiki;
+            return _context.users;
         }
 
-        // GET: api/Grafikis/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetGrafiki([FromRoute] int id)
+        public async Task<IActionResult> GetUser([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var grafiki = await _context.grafiki.FindAsync(id);
+            var user = await _context.users.FindAsync(id);
 
-            if (grafiki == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(grafiki);
+            return Ok(user);
         }
 
-        // PUT: api/Grafikis/5
+        // PUT: api/Users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGrafiki([FromRoute] int id, [FromBody] Grafiki grafiki)
+        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != grafiki.Id_Grafiki)
+            if (id != user.UserId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(grafiki).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace EventR.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GrafikiExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace EventR.Controllers
             return NoContent();
         }
 
-        // POST: api/Grafikis
+        // POST: api/Users
         [HttpPost]
-        public async Task<IActionResult> PostGrafiki([FromBody] Grafiki grafiki)
+        public async Task<IActionResult> PostUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.grafiki.Add(grafiki);
+            _context.users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGrafiki", new { id = grafiki.Id_Grafiki }, grafiki);
+            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
-        // DELETE: api/Grafikis/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGrafiki([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var grafiki = await _context.grafiki.FindAsync(id);
-            if (grafiki == null)
+            var user = await _context.users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.grafiki.Remove(grafiki);
+            _context.users.Remove(user);
             await _context.SaveChangesAsync();
 
-            return Ok(grafiki);
+            return Ok(user);
         }
 
-        private bool GrafikiExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.grafiki.Any(e => e.Id_Grafiki == id);
+            return _context.users.Any(e => e.UserId == id);
         }
     }
 }

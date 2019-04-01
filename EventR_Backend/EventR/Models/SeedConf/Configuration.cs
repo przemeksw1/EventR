@@ -20,19 +20,19 @@ namespace EventRApi.Models.SeedConf
             int users = 6;
             for (int i = 1; i < users; i++)
             {
-                var user = new Uzytkownicy
+                var user = new User
                 {
-                    Id_Uytkownika = i,
-                    Nick = "nick" + i,
-                    Imie = "Imie" + i,
-                    Nazwisko = "Nazwisko" + i,
+                    UserId = i,
+                    Nickname = "nick" + i,
+                    FirstName = "Imie" + i,
+                    LastName = "Nazwisko" + i,
                     Email = "Email" + i + "@gmail.com",
-                    NumerTel = 514111231,
-                    Status = 'a',
-                    Poziom_Konta = i,
+                    Telephone = 514111231,
+                    State = 'a',
+                    AccessLevel = i,
                     Avatar = "https://vignette.wikia.nocookie.net/james-camerons-avatar/images/d/d4/Neytiri_Profil.jpg/revision/latest/scale-to-width-down/1000?cb=20100226001342&path-prefix=pl"
                 };
-                builder.Entity<Uzytkownicy>().HasData(user);
+                builder.Entity<User>().HasData(user);
             }
 
             //
@@ -59,18 +59,18 @@ namespace EventRApi.Models.SeedConf
                 else
                     thema = "Poezja";
 
-                var nevent = new Wydarzenia
+                var nevent = new Event
                 {
-                    Id_Wydarzenia = i,
-                    Id_Autora = random.Next(1, users),
-                    Nazwa = "Wydarzenie" + i,
-                    Opis = "To jest jakis tam opis" + i,
-                    Data = DateTime.Now,
-                    Kategoria = category,
-                    Status = status,
-                    Tematyka = thema
+                    EventId = i,
+                    AuthorId = random.Next(1, users),
+                    Name = "Wydarzenie" + i,
+                    Description = "To jest jakis tam opis" + i,
+                    Date = DateTime.Now,
+                    Category = category,
+                    State = status,
+                    Subject = thema
                 };
-                builder.Entity<Wydarzenia>().HasData(nevent);
+                builder.Entity<Event>().HasData(nevent);
             }
 
             //
@@ -80,15 +80,15 @@ namespace EventRApi.Models.SeedConf
             int coments = events + 2;
             for(int i=1; i<coments;i++)
             {
-                var comment = new Komentarze
+                var comment = new Comment
                 {
-                    Id_Komentarza = i,
-                    Id_Autora=random.Next(1,users),
-                    Id_Wydarzenia= random.Next(1, events),
-                    Tytul = "tytyl"+i,
-                    Tresc = "To jest komentarz="+i
+                    CommentId = i,
+                    AuthorId=random.Next(1,users),
+                    EventId= random.Next(1, events),
+                    Title = "tytyl"+i,
+                    Content = "To jest komentarz="+i
                 };
-                builder.Entity<Komentarze>().HasData(comment);
+                builder.Entity<Comment>().HasData(comment);
             }
 
 
@@ -98,14 +98,14 @@ namespace EventRApi.Models.SeedConf
             int prefs = 5;
             for(int i=1;i<prefs;i++)
             {
-                var pref = new Preferencje
+                var pref = new Preference
                 {
-                    Id_Preferencji = i,
-                    Id_Uzytkownika = i,
-                    Typ = "thema",
-                    Preferencja = "Metal"
+                    PreferenceId = i,
+                    UserId = i,
+                    Type = "thema",
+                    PreferenceContent = "Metal"
                 };
-                builder.Entity<Preferencje>().HasData(pref);
+                builder.Entity<Preference>().HasData(pref);
             }
 
             //
@@ -115,14 +115,14 @@ namespace EventRApi.Models.SeedConf
             int images = 3;
             for(int i=1;i<images;i++)
             {
-                var image = new Grafiki
+                var image = new Image
                 {
-                    Id_Grafiki = i,
-                    Id_Autora = i,
-                    Id_Wydarzenia = i,
-                    Grafika = "https://www.google.pl/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwjFmKWCvIThAhUrMuwKHd0mDmsQjRx6BAgBEAU&url=https%3A%2F%2Fwww.ahe.lodz.pl%2Fgrafika&psig=AOvVaw0FHDYm1d4noTaLO_6-U1k0&ust=1552750362497167"
+                    ImageId = i,
+                    AuthorId = i,
+                    EventId = i,
+                    ImageLink = "https://www.google.pl/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwjFmKWCvIThAhUrMuwKHd0mDmsQjRx6BAgBEAU&url=https%3A%2F%2Fwww.ahe.lodz.pl%2Fgrafika&psig=AOvVaw0FHDYm1d4noTaLO_6-U1k0&ust=1552750362497167"
                 };
-                builder.Entity<Grafiki>().HasData(image);
+                builder.Entity<Image>().HasData(image);
             }
 
 

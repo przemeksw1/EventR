@@ -11,56 +11,56 @@ namespace EventR.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WydarzeniasController : ControllerBase
+    public class ImagesController : ControllerBase
     {
         private readonly Context _context;
 
-        public WydarzeniasController(Context context)
+        public ImagesController(Context context)
         {
             _context = context;
         }
 
-        // GET: api/Wydarzenias
+        // GET: api/Images
         [HttpGet]
-        public IEnumerable<Wydarzenia> Getwydarzenia()
+        public IEnumerable<Image> GetAllImages()
         {
-            return _context.wydarzenia;
+            return _context.images;
         }
 
-        // GET: api/Wydarzenias/5
+        // GET: api/Images/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetWydarzenia([FromRoute] int id)
+        public async Task<IActionResult> GetImage([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var wydarzenia = await _context.wydarzenia.FindAsync(id);
+            var image = await _context.images.FindAsync(id);
 
-            if (wydarzenia == null)
+            if (image == null)
             {
                 return NotFound();
             }
 
-            return Ok(wydarzenia);
+            return Ok(image);
         }
 
-        // PUT: api/Wydarzenias/5
+        // PUT: api/Images/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWydarzenia([FromRoute] int id, [FromBody] Wydarzenia wydarzenia)
+        public async Task<IActionResult> PutImage([FromRoute] int id, [FromBody] Image image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != wydarzenia.Id_Wydarzenia)
+            if (id != image.ImageId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(wydarzenia).State = EntityState.Modified;
+            _context.Entry(image).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace EventR.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WydarzeniaExists(id))
+                if (!ImageExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace EventR.Controllers
             return NoContent();
         }
 
-        // POST: api/Wydarzenias
+        // POST: api/Images
         [HttpPost]
-        public async Task<IActionResult> PostWydarzenia([FromBody] Wydarzenia wydarzenia)
+        public async Task<IActionResult> PostImage([FromBody] Image image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.wydarzenia.Add(wydarzenia);
+            _context.images.Add(image);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWydarzenia", new { id = wydarzenia.Id_Wydarzenia }, wydarzenia);
+            return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
         }
 
-        // DELETE: api/Wydarzenias/5
+        // DELETE: api/Images/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWydarzenia([FromRoute] int id)
+        public async Task<IActionResult> DeleteImage([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var wydarzenia = await _context.wydarzenia.FindAsync(id);
-            if (wydarzenia == null)
+            var image = await _context.images.FindAsync(id);
+            if (image == null)
             {
                 return NotFound();
             }
 
-            _context.wydarzenia.Remove(wydarzenia);
+            _context.images.Remove(image);
             await _context.SaveChangesAsync();
 
-            return Ok(wydarzenia);
+            return Ok(image);
         }
 
-        private bool WydarzeniaExists(int id)
+        private bool ImageExists(int id)
         {
-            return _context.wydarzenia.Any(e => e.Id_Wydarzenia == id);
+            return _context.images.Any(e => e.ImageId == id);
         }
     }
 }
