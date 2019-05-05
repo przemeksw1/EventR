@@ -1,6 +1,7 @@
 import "./Login.css";
 import React, { Component } from "react";
 import { Button, FormControl, FormGroup, Panel } from "react-bootstrap";
+import { translate } from "react-switch-lang";
 
 class Login extends Component {
   state = { email: "", password: "" };
@@ -16,17 +17,17 @@ class Login extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div className="login">
         <Panel>
-          <Panel.Heading>Logowanie</Panel.Heading>
+          <Panel.Heading>{t("login.heading")}</Panel.Heading>
           <form
             onSubmit={e => {
               this.props.logUserIn({
                 email: this.state.email,
                 password: this.state.password
               });
-              console.log("dupa");
               e.preventDefault();
             }}
           >
@@ -55,7 +56,7 @@ class Login extends Component {
               className="btn btn-success"
               block
             >
-              Zaloguj się
+              {t("login.login")}
             </Button>
           </form>
         </Panel>
@@ -64,4 +65,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default translate(Login);

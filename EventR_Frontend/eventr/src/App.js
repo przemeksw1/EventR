@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import "./App.css";
+import pl from "./translations/pl.json";
+import en from "./translations/en.json";
 
 import Routes from "./Routes";
 import EventRNavbar from "./components/EventRNavbar";
+import {
+  setTranslations,
+  setDefaultLanguage,
+  setLanguageCookie
+} from "react-switch-lang";
 
 class App extends Component {
   state = {
@@ -14,6 +21,10 @@ class App extends Component {
   componentDidMount() {
     this.getEvents();
     this.getUsers();
+
+    setTranslations({ en, pl });
+    setDefaultLanguage("pl");
+    setLanguageCookie();
   }
 
   logUserIn = user => {
@@ -26,7 +37,7 @@ class App extends Component {
   };
 
   addUser = user => {
-    fetch("http://localhost:52719/api/uzytkownicies", {
+    fetch("http://localhost:52719/api/users", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user)
@@ -35,7 +46,7 @@ class App extends Component {
   };
 
   addEvent = event => {
-    fetch("http://localhost:52719/api/wydarzenias", {
+    fetch("http://localhost:52719/api/events", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: event
@@ -44,7 +55,7 @@ class App extends Component {
   };
 
   getUsers = () => {
-    fetch("http://localhost:52719/api/uzytkownicies/")
+    fetch("http://localhost:52719/api/users/")
       .then(res => res.json())
       .then(users => {
         this.setState({ users });
@@ -52,7 +63,7 @@ class App extends Component {
   };
 
   getEvents = () => {
-    fetch("http://localhost:52719/api/wydarzenias/")
+    fetch("http://localhost:52719/api/events/")
       .then(res => res.json())
       .then(events => this.setState({ events }));
   };

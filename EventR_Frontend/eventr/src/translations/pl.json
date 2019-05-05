@@ -1,0 +1,16 @@
+{
+  "navbar": {
+    "language": "Język",
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
+    "signin": "Zarejestruj się"
+  },
+  "home": {
+    "searchEvent": " ",
+    "calendar": "Kalendarz eventów"
+  },
+  "login": {
+    "heading": "Logowanie",
+    "login": "Zaloguj się"
+  }
+}
