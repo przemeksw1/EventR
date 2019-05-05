@@ -10,7 +10,7 @@ namespace EventR.Services
 {
     public interface IEmailService
     {
+        void SendConfirmationEmail(string address);
 
-      
     }
 }
