@@ -15,6 +15,7 @@ namespace EventRApi.Models
         public string Email { get; set; }
         public int Telephone { get; set; }
         public char State { get; set; }
+        public string Password { get; set; }
         public int AccessLevel { get; set; }
         public string Avatar { get; set; } //link do grafiki
 
@@ -23,5 +24,15 @@ namespace EventRApi.Models
 
         //Lista wydarzen polubionych przez uzytkownika - tabela Polubienia
         public virtual ICollection<Event> LikedEvents { get; set; }
+
+
+        public User(string Nickname, string FirstName, string LastName, string Email, string Password)
+        {
+            this.Nickname = Nickname;
+            this.FirstName = FirstName;
+            this.LastName = LastName;
+            this.Email = Email;
+            this.Password = Password;
+        }
     }
 }
