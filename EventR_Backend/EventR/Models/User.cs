@@ -17,6 +17,8 @@ namespace EventRApi.Models
         public char State { get; set; }
         public string Password { get; set; }
         public int AccessLevel { get; set; }
+        public string RefreshToken { get; set; }
+        public bool EmailConfirmed { get; set; }
         public string Avatar { get; set; } //link do grafiki
 
         //Lista obserowanych wydarzen - tabela WydarzeniaObserwowane
@@ -26,13 +28,19 @@ namespace EventRApi.Models
         public virtual ICollection<Event> LikedEvents { get; set; }
 
 
-        public User(string Nickname, string FirstName, string LastName, string Email, string Password)
+        public User(string Nickname, string FirstName, string LastName, string Email, string Password, int AccessLevel)
         {
+            this.AccessLevel = AccessLevel;
             this.Nickname = Nickname;
             this.FirstName = FirstName;
             this.LastName = LastName;
             this.Email = Email;
             this.Password = Password;
+        }
+
+        public User()
+        {
+
         }
     }
 }

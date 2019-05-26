@@ -47,7 +47,7 @@ namespace EventR.Controllers
             try
             {
                 await _userService.AddUser(viewModel);
-                //_emailService.SendConfirmationEmail(viewModel.Email);
+                _emailService.SendConfirmationEmail(viewModel.Email);
                 return Ok();
             }
             catch (ArgumentException ex)

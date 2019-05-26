@@ -27,10 +27,10 @@ namespace EventRApi.Models.SeedConf
                     FirstName = "Imie" + i,
                     LastName = "Nazwisko" + i,
                     Email = "Email" + i + "@gmail.com",
-                    Telephone = 514111231,
-                    State = 'a',
+                    Password = "qwerty123",
                     AccessLevel = i,
-                    Avatar = "https://vignette.wikia.nocookie.net/james-camerons-avatar/images/d/d4/Neytiri_Profil.jpg/revision/latest/scale-to-width-down/1000?cb=20100226001342&path-prefix=pl"
+
+                    //Avatar = "https://vignette.wikia.nocookie.net/james-camerons-avatar/images/d/d4/Neytiri_Profil.jpg/revision/latest/scale-to-width-down/1000?cb=20100226001342&path-prefix=pl"
                 };
                 builder.Entity<User>().HasData(user);
             }
