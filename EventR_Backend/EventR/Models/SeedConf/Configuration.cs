@@ -43,7 +43,7 @@ namespace EventRApi.Models.SeedConf
             //
             int events = 11;
             string category, thema;
-            char status;
+            bool status;
             for (int i = 1; i < events; i++)
             {
                 if (i % 2 == 1)
@@ -52,9 +52,9 @@ namespace EventRApi.Models.SeedConf
                     category = "Przedstawienie";
 
                 if (random.Next(0, 1) == 0)
-                    status = 'T';
+                    status = true; // odbyl sie
                 else
-                    status = 'F';
+                    status = false; // nie odbyl sie
                 if (random.Next(0, 3) == 0)
                     thema = "Lata 20";
                 else if (random.Next(0, 3) == 1)
@@ -68,10 +68,13 @@ namespace EventRApi.Models.SeedConf
                     AuthorId = random.Next(1, users),
                     Name = "Wydarzenie" + i,
                     Description = "To jest jakis tam opis" + i,
-                    Date = DateTime.Now,
+                    DateStart = DateTime.Now,
+                    DateEnd = DateTime.Now,
                     Category = category,
                     State = status,
-                    Subject = thema
+                    Subject = thema,
+                    ImageMainLink = "https://www.google.pl/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwjFmKWCvIThAhUrMuwKHd0mDmsQjRx6BAgBEAU&url=https%3A%2F%2Fwww.ahe.lodz.pl%2Fgrafika&psig=AOvVaw0FHDYm1d4noTaLO_6-U1k0&ust=1552750362497167"
+
                 };
                 builder.Entity<Event>().HasData(nevent);
             }

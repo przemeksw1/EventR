@@ -9,7 +9,7 @@ using EventR.Helpers;
 
 namespace EventR.Services.Implementations
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         private const string Host = "https://eventrapi.azurewebsites.net/api";
         private readonly IOptions<EmailSettings> _options;

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EventRApi.Models;
+using EventR.ViewModels;
+using EventR.Services;
 
 namespace EventR.Controllers
 {
@@ -14,10 +16,12 @@ namespace EventR.Controllers
     public class EventsController : ControllerBase
     {
         private readonly Context _context;
+        private readonly IEventService _eventService;
 
-        public EventsController(Context context)
+        public EventsController(Context context, IEventService eventService)
         {
             _context = context;
+            _eventService = eventService;
         }
 
         // GET: api/Events
@@ -83,17 +87,21 @@ namespace EventR.Controllers
 
         // POST: api/Events
         [HttpPost]
-        public async Task<IActionResult> PostEvent([FromBody] Event _event)
+        public async Task<IActionResult> Add([FromBody] EventViewModel eventViewModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                _eventService.AddEvent(eventViewModel);
+                return Ok();
             }
-
-            _context.events.Add(_event);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEvent", new { id = _event.EventId }, _event);
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // DELETE: api/Events/5
