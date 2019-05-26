@@ -18,6 +18,7 @@ namespace EventRApi.Models.SeedConf
             // Dodawanie uzytkownikow do bazy
             //
             int users = 6;
+            int level = 1;
             for (int i = 1; i < users; i++)
             {
                 var user = new User
@@ -28,10 +29,12 @@ namespace EventRApi.Models.SeedConf
                     LastName = "Nazwisko" + i,
                     Email = "Email" + i + "@gmail.com",
                     Password = "qwerty123",
-                    AccessLevel = i,
+                    AccessLevel = level,
 
                     //Avatar = "https://vignette.wikia.nocookie.net/james-camerons-avatar/images/d/d4/Neytiri_Profil.jpg/revision/latest/scale-to-width-down/1000?cb=20100226001342&path-prefix=pl"
                 };
+                
+                level = 0;
                 builder.Entity<User>().HasData(user);
             }
 

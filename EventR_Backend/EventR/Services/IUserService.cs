@@ -15,5 +15,7 @@ namespace EventR.Services
         Task<ObjectResult> Login(LoginViewModel viewModel);
 
         Task AddUser(SignupViewModel viewModel);
+
+        Task ConfirmEmail(string token);
     }
 }

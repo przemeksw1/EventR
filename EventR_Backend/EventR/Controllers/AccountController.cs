@@ -59,5 +59,25 @@ namespace EventR.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
+        [HttpPost]
+        [Route("account/ConfirmEmail/{token}")]
+        public async Task<IActionResult> ConfirmEmail(string token)
+        {
+            try
+            {
+                await _userService.ConfirmEmail(token);
+                return Ok();
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

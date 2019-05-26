@@ -11,11 +11,18 @@ namespace EventR.Services.Implementations
 {
     public class EmailService
     {
-        private const string Host = "localhost:3000";
+        private const string Host = "https://eventrapi.azurewebsites.net/api";
         private readonly IOptions<EmailSettings> _options;
         private readonly ITokenService _tokenService;
         private readonly IUserService _userService;
-       // private readonly IProductService _productService;
+        // private readonly IProductService _productService;
+
+        public EmailService(IOptions<EmailSettings> options, ITokenService tokenService, IUserService userService)
+        {
+            _options = options;
+            _tokenService = tokenService;
+            _userService = userService;          
+        }
 
         public void SendConfirmationEmail(string address)
         {

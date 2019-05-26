@@ -24,13 +24,13 @@ namespace EventR.Services.Implementations
 
         public async Task<ObjectResult> Login(LoginViewModel viewModel)
         {
-            var user = AuthHelper.Authenticate(viewModel.NickName, viewModel.Password, _context);
+            var user = AuthHelper.Authenticate(viewModel.Email, viewModel.Password, _context);
             if (user == null)
                 throw new ArgumentException();
 
             var userClaims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Nickname),
+                new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                 new Claim(ClaimTypes.Role, user.AccessLevel.ToString()),
                 new Claim("Confirmed", user.EmailConfirmed.ToString()),
@@ -56,9 +56,23 @@ namespace EventR.Services.Implementations
                 throw new ArgumentException();
 
           
-            var newUser = new User(viewModel.NickName, viewModel.FirstName, viewModel.LastName, viewModel.Email, viewModel.Password, viewModel.AccessLevel);
+            var newUser = new User(viewModel.NickName, viewModel.FirstName, viewModel.LastName, viewModel.Email, viewModel.Password, 0);
             _context.users.Add(newUser);
 
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ConfirmEmail(string token)
+        {
+            var claims = _tokenService.GetPrincipalFromToken(token, false);
+            var email = claims.Claims.Where(c => c.Type == ClaimTypes.Email)
+                .Select(c => c.Value).SingleOrDefault();
+
+            var user = _context.users.SingleOrDefault(u => u.Email == email);
+            if (user == null)
+                throw new ArgumentException();
+
+            user.EmailConfirmed = true;
             await _context.SaveChangesAsync();
         }
     }
