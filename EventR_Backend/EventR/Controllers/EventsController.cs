@@ -87,7 +87,7 @@ namespace EventR.Controllers
 
         // POST: api/Events
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] EventViewModel eventViewModel)
+        public IActionResult Add([FromBody] EventViewModel eventViewModel)
         {
             try
             {

@@ -6,24 +6,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EventR.ViewModels;
 using EventR.Services;
+using EventRApi.Models;
 
 namespace EventR.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
-
-        public AccountController(IUserService userService, IEmailService emailService)
+        private readonly Context _context;
+        public AccountController(IUserService userService, IEmailService emailService, Context context)
         {
             _userService = userService;
             _emailService = emailService;
+            _context = context;
         }
 
 
         [HttpPost]
+        [Route("api/Account/Login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel viewModel)
         {
             try
@@ -40,19 +42,21 @@ namespace EventR.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-
+        
         [HttpPost]
-        public async Task<IActionResult> Signup([FromBody] SignupViewModel viewModel)
+        [Route("api/Account/Signup")]
+        public async Task<IActionResult> Signup([FromBody]SignupViewModel viewModel)
         {
+           
             try
             {
                 await _userService.AddUser(viewModel);
                 _emailService.SendConfirmationEmail(viewModel.Email);
                 return Ok();
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                return BadRequest();
+                return BadRequest("Cos nie dziala");
             }
             catch (Exception)
             {
@@ -82,6 +86,7 @@ namespace EventR.Controllers
 
         // Zmiana hasla
         [HttpPost]
+        [Route("api/Account/ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordViewModel viewModel)
         {
             try
@@ -101,6 +106,7 @@ namespace EventR.Controllers
         }
 
         [HttpPost]
+        [Route("api/Account/ResetPassword")]
         public IActionResult ResetPassword([FromBody] RequestResetPasswordViewModel viewModel)
         {
             try
