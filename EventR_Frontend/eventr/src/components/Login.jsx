@@ -2,12 +2,17 @@ import "./Login.css";
 import React, { Component } from "react";
 import { Button, FormControl, FormGroup, Panel } from "react-bootstrap";
 import { translate } from "react-switch-lang";
+import AuthService from "../services/AuthService";
 
 class Login extends Component {
-  state = { email: "", password: "" };
+  constructor(props) {
+    super(props);
+    this.authService = new AuthService();
+  }
+  state = { nickname: "", password: "" };
 
   validateForm = () => {
-    return this.state.email.length > 0 && this.state.password.length > 0;
+    return this.state.nickname.length > 0 && this.state.password.length > 0;
   };
 
   handleChange = event => {
@@ -24,21 +29,18 @@ class Login extends Component {
           <Panel.Heading>{t("login.heading")}</Panel.Heading>
           <form
             onSubmit={e => {
-              this.props.logUserIn({
-                email: this.state.email,
-                password: this.state.password
-              });
+              this.authService.login(this.state.nickname, this.state.password);
               e.preventDefault();
             }}
           >
-            <FormGroup controlId="email">
+            <FormGroup controlId="nickname">
               <FormControl
                 autoFocus
-                type="email"
-                value={this.state.email}
+                type="text"
+                value={this.state.nickname}
                 onChange={this.handleChange}
-                placeholder="Podaj adres email"
-                name="email"
+                placeholder="Podaj nazwę użytkownika"
+                name="nickname"
               />
             </FormGroup>
             <FormGroup controlId="password">

@@ -16,32 +16,20 @@ class Routes extends Component {
           path="/"
           render={props => <Home {...props} posts={this.props.events} />}
         />
-        <Route
-          exact
-          path="/login"
-          render={props => (
-            <Login {...props} logUserIn={this.props.logUserIn} />
-          )}
-        />
+        <Route exact path="/login" render={props => <Login {...props} />} />
         <Route
           exact
           path="/register"
-          render={props => <Register {...props} addUser={this.props.addUser} />}
+          render={props => <Register {...props} />}
         />
         <Route
           exact
           path="/admin"
-          render={props => (
-            <AdminPanel
-              {...props}
-              users={this.props.users}
-              events={this.props.events}
-            />
-          )}
+          render={props => <AdminPanel {...props} events={this.props.events} />}
         />
         <Route
           exact
-          path="/event/:id_Wydarzenia"
+          path="/event/:eventId"
           render={props => (
             <EventPage {...props} eventId={this.props.eventId} />
           )}

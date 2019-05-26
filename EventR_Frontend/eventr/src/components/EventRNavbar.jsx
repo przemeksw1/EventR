@@ -4,38 +4,34 @@ import en from "../translations/en.json";
 import React, { Component } from "react";
 
 import { Navbar, NavItem, Nav, Glyphicon, NavDropdown } from "react-bootstrap";
+import { Form, FormControl, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import { setLanguage, translate } from "react-switch-lang";
 
 import NewEvent from "./NewEvent";
+import AuthService from "../services/AuthService";
 
 class EventRNavbar extends Component {
+  constructor(props) {
+    super(props);
+    this.authService = new AuthService();
+    this.isUserLoggedIn = false;
+  }
   state = {
     showCreateForm: false
   };
+  componentDidMount() {
+    this.isUserLoggedIn = this.authService.loggedIn();
+  }
 
   hideForm = () => {
     this.setState({ showCreateForm: false });
   };
 
   render() {
-    const { isUserLoggedIn, t } = this.props;
-    const loginControl = isUserLoggedIn ? (
-      <Navbar.Collapse>
-        <Nav pullRight>
-          <Nav pullRight>
-            <NavItem
-              onClick={() => {
-                this.props.logUserOut();
-              }}
-            >
-              {t("navbar.logout")}
-            </NavItem>
-          </Nav>
-        </Nav>
-      </Navbar.Collapse>
-    ) : (
+    const { t } = this.props;
+    const loginControl = this.isUserLoggedIn ? (
       <Navbar.Collapse>
         <Nav pullRight>
           <NavItem
@@ -50,6 +46,18 @@ class EventRNavbar extends Component {
               bsSize="large"
             />
           </NavItem>
+          <NavItem
+            onClick={() => {
+              this.authService.logout();
+            }}
+          >
+            {t("navbar.logout")}
+          </NavItem>
+        </Nav>
+      </Navbar.Collapse>
+    ) : (
+      <Navbar.Collapse>
+        <Nav pullRight>
           <NavDropdown title={t("navbar.language")} id="lang-dropdown">
             <NavItem onClick={() => setLanguage("pl")}>Polski</NavItem>
             <NavItem onClick={() => setLanguage("en")}>English</NavItem>
@@ -64,7 +72,7 @@ class EventRNavbar extends Component {
       </Navbar.Collapse>
     );
     return (
-      <Navbar fluid collapseOnSelect>
+      <Navbar collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">EventR</Link>
@@ -77,5 +85,4 @@ class EventRNavbar extends Component {
     );
   }
 }
-
 export default translate(EventRNavbar);

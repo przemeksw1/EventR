@@ -10,60 +10,40 @@ import {
   setDefaultLanguage,
   setLanguageCookie
 } from "react-switch-lang";
+import AuthService from "./services/AuthService";
+import EventService from "./services/EventService";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.authService = new AuthService();
+    this.eventService = new EventService();
+  }
   state = {
-    isUserLoggedIn: false,
-    users: [],
     events: []
   };
 
   componentDidMount() {
     this.getEvents();
-    this.getUsers();
 
     setTranslations({ en, pl });
     setDefaultLanguage("pl");
     setLanguageCookie();
   }
 
-  logUserIn = user => {
-    this.setState({ isUserLoggedIn: true });
-    this.addUser(user);
-  };
-
-  logUserOut = () => {
-    this.setState({ isUserLoggedIn: false });
-  };
-
-  addUser = user => {
-    fetch("http://localhost:52719/api/users", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user)
-    });
-    this.getUsers();
-  };
-
-  addEvent = event => {
-    fetch("http://localhost:52719/api/events", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: event
-    });
-    this.getEvents();
-  };
-
-  getUsers = () => {
-    fetch("http://localhost:52719/api/users/")
-      .then(res => res.json())
-      .then(users => {
-        this.setState({ users });
-      });
-  };
+  // addEvent = event => {
+  //   fetch("https://eventrwebapi.azurewebsites.net/api/events", {
+  //     method: "post",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(event)
+  //   });
+  //   this.getEvents();
+  //   //TODO: przerobić
+  // };
 
   getEvents = () => {
-    fetch("http://localhost:52719/api/events/")
+    this.eventService
+      .getEvents()
       .then(res => res.json())
       .then(events => this.setState({ events }));
   };
@@ -72,17 +52,8 @@ class App extends Component {
     return (
       <div className="App">
         {console.log(window.location.href)}
-        <EventRNavbar
-          isUserLoggedIn={this.state.isUserLoggedIn}
-          logUserOut={this.logUserOut}
-        />
-        <Routes
-          addUser={this.addUser}
-          addEvent={this.addEvent}
-          logUserIn={this.logUserIn}
-          users={this.state.users}
-          events={this.state.events}
-        />
+        <EventRNavbar />
+        <Routes events={this.state.events} />
       </div>
     );
   }
