@@ -50,8 +50,8 @@ namespace EventR.Services.Implementations
 
         public async Task AddUser(SignupViewModel viewModel)
         {
-            
-            var user = _context.users.SingleOrDefault(u => u.Email == viewModel.Email);
+
+            var user = _context.users.Where(u => u.Email == viewModel.Email || u.Nickname == viewModel.NickName).SingleOrDefault();
             if (user != null)
                 throw new ArgumentException();
 
@@ -73,6 +73,31 @@ namespace EventR.Services.Implementations
                 throw new ArgumentException();
 
             user.EmailConfirmed = true;
+            await _context.SaveChangesAsync();
+        }
+
+        public int GetCurrentUserId(HttpContext httpContext)
+        {
+            return int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        }
+
+        public User GetUser(string email)
+        {
+            var user = _context.users.FirstOrDefault(u => u.Email == email);
+            if (user == null)
+                throw new ArgumentException();
+            return user;
+        }
+
+        public async Task ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            var user = _context.users.Single(u => u.UserId == userId);
+            var validatedUser = AuthHelper.Authenticate(user.Email, oldPassword, _context);
+
+            if (validatedUser == null)
+                throw new ArgumentException();
+
+            user.Password = newPassword;
             await _context.SaveChangesAsync();
         }
     }

@@ -43,6 +43,24 @@ namespace EventR.Services.Implementations
             Send(message);
         }
 
+        public void SendResetPassword(string address)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(_options.Value.Email));
+            message.To.Add(new MailboxAddress(address));
+            message.Subject = "Password Reset";
+
+            var token = _tokenService.GenerateResetToken(address);
+            var url= @"http://" + Host + "/Account/SetPassword/" + token;
+            var builder = new BodyBuilder
+            {
+                TextBody = $@"Kliknij w poniższy link lub skopiuj go do przeglądarki aby zresetować hasło: {url}",
+                HtmlBody = $@"<p>Kliknij w poniższy link lub skopiuj go do przeglądarki aby zresetować hasło:<br></p><a href={url}>Link</a>"
+            };
+            message.Body = builder.ToMessageBody();
+            Send(message);
+        }
+
         private void Send(MimeMessage message)
         {
             using (var client = new SmtpClient())

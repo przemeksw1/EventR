@@ -17,5 +17,11 @@ namespace EventR.Services
         Task AddUser(SignupViewModel viewModel);
 
         Task ConfirmEmail(string token);
+
+        int GetCurrentUserId(HttpContext httpContext);
+
+        Task ChangePassword(int userId, string oldPassword, string newPassword);
+
+        User GetUser(string email);
     }
 }

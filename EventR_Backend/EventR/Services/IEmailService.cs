@@ -11,6 +11,6 @@ namespace EventR.Services
     public interface IEmailService
     {
         void SendConfirmationEmail(string address);
-
+        void SendResetPassword(string address);
     }
 }

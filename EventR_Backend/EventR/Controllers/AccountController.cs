@@ -79,5 +79,46 @@ namespace EventR.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        // Zmiana hasla
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordViewModel viewModel)
+        {
+            try
+            {
+                var userId = _userService.GetCurrentUserId(HttpContext);
+                await _userService.ChangePassword(userId, viewModel.OldPassword, viewModel.NewPassword);
+                return Ok();
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword([FromBody] RequestResetPasswordViewModel viewModel)
+        {
+            try
+            {
+                var user = _userService.GetUser(viewModel.Email);
+                _emailService.SendResetPassword(user.Email);
+                return Ok();
+            }
+            catch(ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
     }
 }

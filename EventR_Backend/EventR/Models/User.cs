@@ -36,6 +36,7 @@ namespace EventRApi.Models
             this.LastName = LastName;
             this.Email = Email;
             this.Password = Password;
+            this.EmailConfirmed = false;
         }
 
         public User()
