@@ -1,9 +1,12 @@
 import "./EventRNavbar.css";
+import pl from "../translations/pl.json";
+import en from "../translations/en.json";
 import React, { Component } from "react";
 
-import { Navbar, NavItem, Nav, Glyphicon } from "react-bootstrap";
+import { Navbar, NavItem, Nav, Glyphicon, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
+import { setLanguage, translate } from "react-switch-lang";
 
 import NewEvent from "./NewEvent";
 
@@ -17,7 +20,7 @@ class EventRNavbar extends Component {
   };
 
   render() {
-    const { isUserLoggedIn } = this.props;
+    const { isUserLoggedIn, t } = this.props;
     const loginControl = isUserLoggedIn ? (
       <Navbar.Collapse>
         <Nav pullRight>
@@ -27,7 +30,7 @@ class EventRNavbar extends Component {
                 this.props.logUserOut();
               }}
             >
-              Wyloguj się
+              {t("navbar.logout")}
             </NavItem>
           </Nav>
         </Nav>
@@ -47,11 +50,15 @@ class EventRNavbar extends Component {
               bsSize="large"
             />
           </NavItem>
+          <NavDropdown title={t("navbar.language")} id="lang-dropdown">
+            <NavItem onClick={() => setLanguage("pl")}>Polski</NavItem>
+            <NavItem onClick={() => setLanguage("en")}>English</NavItem>
+          </NavDropdown>
           <LinkContainer to="/login">
-            <NavItem>Zaloguj się</NavItem>
+            <NavItem>{t("navbar.login")}</NavItem>
           </LinkContainer>
           <LinkContainer to="/register">
-            <NavItem>Zarejestruj się</NavItem>
+            <NavItem>{t("navbar.signin")}</NavItem>
           </LinkContainer>
         </Nav>
       </Navbar.Collapse>
@@ -64,10 +71,11 @@ class EventRNavbar extends Component {
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
+
         {loginControl}
       </Navbar>
     );
   }
 }
 
-export default EventRNavbar;
+export default translate(EventRNavbar);

@@ -76,6 +76,10 @@ class NewEvent extends Component {
                 <FormControl componentClass="select" placeholder="Kategoria">
                   <option value="music">Muzyczny</option>
                   <option value="sport">Sportowy</option>
+                  <option value="sport">Obóz</option>
+                  <option value="sport">Kino i film</option>
+                  <option value="sport">E-sport</option>
+                  <option value="sport">Spotkanie grupowe</option>
                 </FormControl>
               </FormGroup>
             </div>

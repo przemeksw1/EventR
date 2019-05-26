@@ -3,3 +3,7 @@
   border-radius: 0 !important;
   font-weight: 750;
 }
+
+.dropdown-menu > li > a {
+  color: black !important;
+}
