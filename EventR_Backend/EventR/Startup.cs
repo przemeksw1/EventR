@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EventR.Helpers;
+using EventR.Services;
+using EventR.Services.Implementations;
 using EventRApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +33,13 @@ namespace EventR
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<IConfiguration>(provider => Configuration);
+            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<Context>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddCors();
 
