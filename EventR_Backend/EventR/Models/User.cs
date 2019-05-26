@@ -30,7 +30,7 @@ namespace EventRApi.Models
 
         public User(string Nickname, string FirstName, string LastName, string Email, string Password, int AccessLevel)
         {
-            this.UserId = 10;
+            //this.UserId = 10;
             this.AccessLevel = AccessLevel;
             this.Nickname = Nickname;
             this.FirstName = FirstName;

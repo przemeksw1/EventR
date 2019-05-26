@@ -58,10 +58,7 @@ namespace EventR.Controllers
             {
                 return BadRequest("Cos nie dziala");
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+
         }
 
 

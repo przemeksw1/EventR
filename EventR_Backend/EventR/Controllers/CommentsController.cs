@@ -22,6 +22,7 @@ namespace EventR.Controllers
 
         // GET: api/Comments
         [HttpGet]
+        [Route("api/Comments")]
         public IEnumerable<Comment> GetAllComments()
         {
             return _context.comments;
@@ -83,6 +84,7 @@ namespace EventR.Controllers
 
         // POST: api/Comments
         [HttpPost]
+        [Route("api/Comments/PostComment")]
         public async Task<IActionResult> PostComment([FromBody] Comment comment)
         {
             if (!ModelState.IsValid)

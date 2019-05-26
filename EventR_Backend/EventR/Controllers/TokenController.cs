@@ -11,8 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EventR.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class TokenController : ControllerBase
     {
         private readonly ITokenService _tokenService;
@@ -24,6 +23,7 @@ namespace EventR.Controllers
             _context = usersDb;
         }
         [HttpPost]
+        [Route("api/Token/Refresh")]
         public async Task<IActionResult> Refresh([FromBody] TokenViewModel tokenViewModel)
         {
             var principal = _tokenService.GetPrincipalFromToken(tokenViewModel.AccessToken, false);
@@ -45,6 +45,7 @@ namespace EventR.Controllers
             });
         }
         [HttpPost, Authorize]
+        [Route("api/Token/Revoke")]
         public async Task<IActionResult> Revoke()
         {
             var email = User.Identity.Name;

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MimeKit;
 using EventR.Helpers;
+using MailKit.Security;
+
 
 namespace EventR.Services.Implementations
 {

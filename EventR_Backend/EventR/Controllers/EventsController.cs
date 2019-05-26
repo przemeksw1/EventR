@@ -11,8 +11,7 @@ using EventR.Services;
 
 namespace EventR.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class EventsController : ControllerBase
     {
         private readonly Context _context;
@@ -26,6 +25,7 @@ namespace EventR.Controllers
 
         // GET: api/Events
         [HttpGet]
+        [Route("api/Events")]
         public IEnumerable<Event> GetAllEvents()
         {
             return _context.events;
@@ -33,6 +33,7 @@ namespace EventR.Controllers
 
         // GET: api/Events/5
         [HttpGet("{id}")]
+        [Route("api/Events/{id}")]
         public async Task<IActionResult> GetEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -52,6 +53,7 @@ namespace EventR.Controllers
 
         // PUT: api/Events/5
         [HttpPut("{id}")]
+        [Route("api/Events/{id}")]
         public async Task<IActionResult> PutEvent([FromRoute] int id, [FromBody] Event _event)
         {
             if (!ModelState.IsValid)
@@ -85,8 +87,9 @@ namespace EventR.Controllers
             return NoContent();
         }
 
-        // POST: api/Events
+        // POST: api/Events/Add
         [HttpPost]
+        [Route("api/Events/Add")]
         public IActionResult Add([FromBody] EventViewModel eventViewModel)
         {
             try
@@ -106,6 +109,7 @@ namespace EventR.Controllers
 
         // DELETE: api/Events/5
         [HttpDelete("{id}")]
+        [Route("api/Events/{id}")]
         public async Task<IActionResult> DeleteEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
