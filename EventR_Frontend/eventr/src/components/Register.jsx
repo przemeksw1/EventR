@@ -1,9 +1,15 @@
 import "./Register.css";
 import React, { Component } from "react";
 import { Button, FormControl, FormGroup, Panel } from "react-bootstrap";
+import AuthService from "../services/AuthService";
 
 class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.authService = new AuthService();
+  }
   state = {
+    nickname: "",
     email: "",
     password: "",
     repeatedPassword: "",
@@ -14,6 +20,7 @@ class Register extends Component {
   validateForm() {
     if (
       !(
+        this.state.nickname.length > 0 &&
         this.state.email.length > 0 &&
         this.state.password.length > 0 &&
         this.state.firstName.length > 0 &&
@@ -34,20 +41,30 @@ class Register extends Component {
   render() {
     return (
       <div className="register">
-      {console.log(window.location.href)}
+        {console.log(window.location.href)}
         <Panel>
           <Panel.Heading>Rejestracja</Panel.Heading>
           <form
             onSubmit={e => {
-              this.props.addUser({
-                email: this.state.email,
-                password: this.state.password,
-                firstName: this.state.firstName,
-                lastName: this.state.lastName
-              });
+              this.authService.register(
+                this.state.nickname,
+                this.state.password,
+                this.state.firstName,
+                this.state.lastName,
+                this.state.email
+              );
               e.preventDefault();
             }}
           >
+            <FormGroup controlId="nickname">
+              <FormControl
+                value={this.state.nickname}
+                onChange={this.handleChange}
+                type="text"
+                name="nickname"
+                placeholder="Podaj nazwę użytkownika"
+              />
+            </FormGroup>
             <FormGroup controlId="email">
               <FormControl
                 autoFocus

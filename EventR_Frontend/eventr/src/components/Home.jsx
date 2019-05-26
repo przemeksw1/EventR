@@ -24,8 +24,8 @@ class Home extends Component {
         </div>
         <div className="main">
           {this.props.posts.map(post => (
-            <Link to={"/event/" + post.id_Wydarzenia}>
-              <EventPost key={post.nazwa} post={post} />
+            <Link key={post.eventId} to={"/event/" + post.eventId}>
+              <EventPost post={post} />
             </Link>
           ))}
         </div>
