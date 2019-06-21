@@ -69,14 +69,7 @@ namespace EventR
            });
 
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowOrigin", builder => builder
-                    .AllowAnyHeader()
-                    .WithOrigins("https://eventrapi.azurewebsites.net/api")
-                    .AllowCredentials()
-                    .AllowAnyMethod());
-            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,12 +83,15 @@ namespace EventR
             {
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseCors("AllowOrigin");
-            app.UseMvc();
             app.UseMvcWithDefaultRoute();
+                  app.UseCors(builder =>
+             builder
+             .AllowAnyMethod()
+             .AllowAnyHeader()
+             .AllowAnyOrigin());
+            app.UseHttpsRedirection();
+            app.UseMvc();
         }
     }
 }

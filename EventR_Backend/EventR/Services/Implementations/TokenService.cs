@@ -22,7 +22,6 @@ namespace EventR.Services.Implementations
             _configuration = configuration;
         }
 
-        /// <see cref="ITokenService.GenerateAccessToken(IEnumerable{Claim})"/>
         public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AppSettings:Secret"]));
@@ -36,7 +35,7 @@ namespace EventR.Services.Implementations
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
-        /// <see cref="ITokenService.GenerateRefreshToken"/>
+
         public string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
