@@ -9,12 +9,12 @@ using EventRApi.Models;
 using EventR.ViewModels;
 using EventR.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.ObjectModel;
 
 namespace EventR.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EventsController : ControllerBase
+
+    public class EventsController : Controller
     {
         private readonly Context _context;
         private readonly IEventService _eventService;
@@ -29,6 +29,7 @@ namespace EventR.Controllers
 
         // GET: api/Events
         [HttpGet]
+        [Route("api/Events")]
         public IEnumerable<Event> GetAllEvents()
         {
             return _context.events;
@@ -36,7 +37,8 @@ namespace EventR.Controllers
 
         // GET: api/Events/5
         // Po iD wyszukiwanie.
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("api/Events/{id}")]
         public async Task<IActionResult> GetEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -91,13 +93,15 @@ namespace EventR.Controllers
         }
 
         // POST: api/Events/Add
-        [HttpPost]
-        [Route("api/Events/Add")]
+        [HttpPost, Authorize]
+        [Route("api/Events/AddEvent")]
         public IActionResult Add([FromBody] EventViewModel eventViewModel)
         {
             try
             {
-                _eventService.AddEvent(eventViewModel);
+                var email = User.Identity.Name;
+                var user = _context.users.SingleOrDefault(u => u.Email == email);
+                _eventService.AddEvent(eventViewModel, user.UserId);
                 return Ok();
             }
             catch (ArgumentException ex)
@@ -132,44 +136,52 @@ namespace EventR.Controllers
             return Ok(events);
         }
 
-        [HttpPut("{id}"), Authorize]        
-        public async Task<IActionResult> AddToObservable([FromForm] int id)
+        [HttpPut("{id}"), Authorize]
+        [Route("api/Events/AddToObservable/{id}")]
+        public async Task<IActionResult> AddToObservable([FromRoute] int id)
         {
             var email = User.Identity.Name;
             var user = _context.users.SingleOrDefault(u => u.Email == email);
             if (user == null)
-                return BadRequest();
-            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+                return BadRequest("Nie ma takiego usera");
+            var eve = _context.events.SingleOrDefault(u => u.EventId == id);
             if (eve == null)
-                return BadRequest();
+                return BadRequest("Nie ma takiego eventu kurwa jego mac");
             user.ObservatedEvents.Add(eve);
             await _context.SaveChangesAsync();
             return Ok(user);
         }
 
         [HttpPut("{id}"), Authorize]
-        public async Task<IActionResult> LikeEvent([FromForm] int id)
+        [Route("api/Events/LikeEvent/{id}")]
+        public async Task<IActionResult> LikeEvent([FromRoute] int id)
         {
             var email = User.Identity.Name;
             var user = _context.users.SingleOrDefault(u => u.Email == email);
             if (user == null)
                 return BadRequest();
-            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+            var eve = _context.events.SingleOrDefault(u => u.EventId == id);
             if (eve == null)
                 return BadRequest();
+
+            if (user.LikedEvents == null)
+                user.LikedEvents = new Collection<Event>();
+
             user.LikedEvents.Add(eve);
+
             await _context.SaveChangesAsync();
             return Ok(user);
         }
 
         [HttpPut("{id}"), Authorize]
-        public async Task<IActionResult> RemoveFromObservable([FromForm] int id)
+        [Route("api/Events/RemoveFromObservable/{id}")]
+        public async Task<IActionResult> RemoveFromObservable([FromRoute] int id)
         {
             var email = User.Identity.Name;
             var user = _context.users.SingleOrDefault(u => u.Email == email);
             if (user == null)
                 return BadRequest();
-            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+            var eve = _context.events.SingleOrDefault(u => u.EventId == id);
             if (eve == null)
                 return BadRequest();
             user.ObservatedEvents.Remove(eve);
@@ -178,13 +190,14 @@ namespace EventR.Controllers
         }
 
         [HttpPut("{id}"), Authorize]
-        public async Task<IActionResult> UnlikeEvent([FromForm] int id)
+        [Route("api/Events/Unlike/{id}")]
+        public async Task<IActionResult> UnlikeEvent([FromRoute] int id)
         {
             var email = User.Identity.Name;
             var user = _context.users.SingleOrDefault(u => u.Email == email);
             if (user == null)
                 return BadRequest();
-            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+            var eve = _context.events.SingleOrDefault(u => u.EventId == id);
             if (eve == null)
                 return BadRequest();
             user.LikedEvents.Remove(eve);

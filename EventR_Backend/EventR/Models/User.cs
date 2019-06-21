@@ -26,7 +26,7 @@ namespace EventRApi.Models
 
         //Lista wydarzen polubionych przez uzytkownika - tabela Polubienia
         public virtual ICollection<Event> LikedEvents { get; set; }
-
+        public static object Identity { get; internal set; }
 
         public User(string Nickname, string FirstName, string LastName, string Email, string Password, int AccessLevel)
         {

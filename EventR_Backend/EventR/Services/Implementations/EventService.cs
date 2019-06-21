@@ -15,13 +15,15 @@ namespace EventR.Services.Implementations
             _context = context;           
         }
 
-        public void AddEvent(EventViewModel viewModel)
+        public void AddEvent(EventViewModel viewModel, int authorId)
         {
             if (viewModel == null)
                 throw new ArgumentException();
+         
+
             var newEvent = new Event(viewModel.Name, viewModel.Description, viewModel.DateStart,
                 viewModel.DateEnd, viewModel.Category, viewModel.State, viewModel.Subject, viewModel.ImageMainLink,
-                viewModel.AuthorId);
+                authorId);
 
            
 

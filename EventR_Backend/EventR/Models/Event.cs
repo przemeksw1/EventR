@@ -38,7 +38,9 @@ namespace EventRApi.Models
             Category = category;
             State = state;
             Subject = subject;
+            if(image != null)
             ImageMainLink = image;
+            else ImageMainLink = null;
         }
     }
 }

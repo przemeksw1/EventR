@@ -8,6 +8,6 @@ namespace EventR.Services
 {
     public interface IEventService
     {
-        void AddEvent(EventViewModel viewModel);
+        void AddEvent(EventViewModel viewModel, int authorId);
     }
 }
