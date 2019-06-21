@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using EventRApi.Models;
 using EventR.ViewModels;
 using EventR.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventR.Controllers
 {
-
+    [Route("api/[controller]")]
+    [ApiController]
     public class EventsController : ControllerBase
     {
         private readonly Context _context;
@@ -23,17 +25,18 @@ namespace EventR.Controllers
             _eventService = eventService;
         }
 
+
+
         // GET: api/Events
         [HttpGet]
-        [Route("api/Events")]
         public IEnumerable<Event> GetAllEvents()
         {
             return _context.events;
         }
 
         // GET: api/Events/5
+        // Po iD wyszukiwanie.
         [HttpGet("{id}")]
-        [Route("api/Events/{id}")]
         public async Task<IActionResult> GetEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -128,6 +131,67 @@ namespace EventR.Controllers
 
             return Ok(events);
         }
+
+        [HttpPut("{id}"), Authorize]        
+        public async Task<IActionResult> AddToObservable([FromForm] int id)
+        {
+            var email = User.Identity.Name;
+            var user = _context.users.SingleOrDefault(u => u.Email == email);
+            if (user == null)
+                return BadRequest();
+            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+            if (eve == null)
+                return BadRequest();
+            user.ObservatedEvents.Add(eve);
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+
+        [HttpPut("{id}"), Authorize]
+        public async Task<IActionResult> LikeEvent([FromForm] int id)
+        {
+            var email = User.Identity.Name;
+            var user = _context.users.SingleOrDefault(u => u.Email == email);
+            if (user == null)
+                return BadRequest();
+            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+            if (eve == null)
+                return BadRequest();
+            user.LikedEvents.Add(eve);
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+
+        [HttpPut("{id}"), Authorize]
+        public async Task<IActionResult> RemoveFromObservable([FromForm] int id)
+        {
+            var email = User.Identity.Name;
+            var user = _context.users.SingleOrDefault(u => u.Email == email);
+            if (user == null)
+                return BadRequest();
+            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+            if (eve == null)
+                return BadRequest();
+            user.ObservatedEvents.Remove(eve);
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+
+        [HttpPut("{id}"), Authorize]
+        public async Task<IActionResult> UnlikeEvent([FromForm] int id)
+        {
+            var email = User.Identity.Name;
+            var user = _context.users.SingleOrDefault(u => u.Email == email);
+            if (user == null)
+                return BadRequest();
+            var eve = _context.events.SingleOrDefault(u => u.AuthorId == id);
+            if (eve == null)
+                return BadRequest();
+            user.LikedEvents.Remove(eve);
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+
 
         private bool EventExists(int id)
         {

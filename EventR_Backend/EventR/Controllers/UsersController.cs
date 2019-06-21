@@ -11,7 +11,7 @@ namespace EventR.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : Controller
     {
         private readonly Context _context;
 
@@ -117,9 +117,14 @@ namespace EventR.Controllers
             return Ok(user);
         }
 
+
+
+
         private bool UserExists(int id)
         {
             return _context.users.Any(e => e.UserId == id);
         }
+
+
     }
 }
