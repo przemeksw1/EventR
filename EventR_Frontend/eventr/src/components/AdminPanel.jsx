@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import Table from "./Table";
+import EventService from "../services/EventService";
 
 class AdminPanel extends Component {
   constructor(props) {
     super(props);
+    this.eventService = new EventService();
     this.state = {
       data: []
     };
   }
 
   componentDidMount() {
-    this.setState({ data: this.props.users });
+    this.eventService
+      .getEvents()
+      .then(res => res.json)
+      .then(events => this.setState({ data: events }));
   }
 
   reload = () => {
@@ -52,11 +57,7 @@ class AdminPanel extends Component {
           <div className="col-sm-9">
             <div className="panel panel-default">
               <div className="panel-body">
-                <Table
-                  data={this.state.data}
-                  categories={this.state.categories}
-                  updateData={this.reload}
-                />
+                <Table data={this.state.data} />
               </div>
             </div>
           </div>

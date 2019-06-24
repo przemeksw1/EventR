@@ -9,10 +9,10 @@ class Login extends Component {
     super(props);
     this.authService = new AuthService();
   }
-  state = { nickname: "", password: "" };
+  state = { email: "", password: "" };
 
   validateForm = () => {
-    return this.state.nickname.length > 0 && this.state.password.length > 0;
+    return this.state.email.length > 0 && this.state.password.length > 0;
   };
 
   handleChange = event => {
@@ -29,18 +29,18 @@ class Login extends Component {
           <Panel.Heading>{t("login.heading")}</Panel.Heading>
           <form
             onSubmit={e => {
-              this.authService.login(this.state.nickname, this.state.password);
+              this.authService.login(this.state.email, this.state.password);
               e.preventDefault();
             }}
           >
-            <FormGroup controlId="nickname">
+            <FormGroup controlId="email">
               <FormControl
                 autoFocus
-                type="text"
-                value={this.state.nickname}
+                type="email"
+                value={this.state.email}
                 onChange={this.handleChange}
                 placeholder="Podaj nazwę użytkownika"
-                name="nickname"
+                name="email"
               />
             </FormGroup>
             <FormGroup controlId="password">

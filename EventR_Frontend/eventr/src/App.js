@@ -51,7 +51,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {console.log(window.location.href)}
         <EventRNavbar />
         <Routes events={this.state.events} />
       </div>

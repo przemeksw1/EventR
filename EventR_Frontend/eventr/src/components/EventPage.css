@@ -8,6 +8,7 @@
   left: 0;
   right: 0;
   z-index: -1;
+  height: 100%;
 }
 
 .title-bar {
@@ -39,8 +40,9 @@
   margin-right: 2em;
 }
 
-.event-image {
-  background-image: url("./img/postimage.jpg");
-  height: 500px;
+#event-image {
+  width: 500px;
+  background-position: center;
+  background-size: auto;
   margin-right: 3em;
 }

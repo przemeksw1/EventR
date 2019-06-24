@@ -12,7 +12,7 @@ class EventPost extends Component {
         <div className="postname">{post.name}</div>
         <div className="postdateandlocale">
           <Glyphicon glyph="calendar" />
-          {new Date(post.date).toLocaleDateString("pl-PL")}
+          {new Date(post.dateStart).toLocaleDateString("pl-PL")}
         </div>
         <div className="posttext">{post.description}</div>
       </div>

@@ -16,13 +16,14 @@ class EventRNavbar extends Component {
   constructor(props) {
     super(props);
     this.authService = new AuthService();
-    this.isUserLoggedIn = false;
   }
   state = {
-    showCreateForm: false
+    showCreateForm: false,
+    isUserLoggedIn: false
   };
   componentDidMount() {
-    this.isUserLoggedIn = this.authService.loggedIn();
+    const isUserLoggedIn = this.authService.loggedIn();
+    this.setState({ isUserLoggedIn });
   }
 
   hideForm = () => {
@@ -31,7 +32,7 @@ class EventRNavbar extends Component {
 
   render() {
     const { t } = this.props;
-    const loginControl = this.isUserLoggedIn ? (
+    const loginControl = this.state.isUserLoggedIn ? (
       <Navbar.Collapse>
         <Nav pullRight>
           <NavItem

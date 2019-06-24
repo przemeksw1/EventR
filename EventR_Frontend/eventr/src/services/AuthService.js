@@ -3,13 +3,15 @@ import decode from "jwt-decode";
 export class AuthService {
   constructor() {
     this.apiAddr = "https://eventrapi.azurewebsites.net/api";
+    this.corsAddr = "https://cors-anywhere.herokuapp.com/";
     this.accessTokenName = "access_token";
     this.refreshTokenName = "refresh_token";
   }
 
   fetch = (url, options) => {
     const headers = {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Origin: "localhost:3000"
     };
     if (this.loggedIn()) {
       headers["Authorization"] =
@@ -19,7 +21,6 @@ export class AuthService {
   };
 
   _checkStatus = response => {
-    console.log(response);
     if (response.status >= 200 && response.status < 300) {
       return response;
     } else {
@@ -45,27 +46,34 @@ export class AuthService {
   isTokenExpired = token => {
     try {
       const decoded = decode(token);
-      if (decoded.exp < Date.now() / 1000) return true;
+      console.log(decoded.exp, Date.now() / 1000);
+      if (decoded.exp > Date.now() / 1000) return true;
       else return false;
     } catch (err) {
       console.log("Auth.isTokenExpired err");
       return false;
     }
   };
-  login = async (nickname, password) => {
-    const res = await fetch(`${this.apiAddr}/account/login`, {
+  login = (email, password) => {
+    this.fetch(`${this.corsAddr + this.apiAddr}/account/login`, {
       method: "POST",
-      body: JSON.stringify({ nickname, password })
-    });
-    const resToken = await res.json();
-    this.setToken(resToken.token, this.accessTokenName);
-    this.setToken(resToken.refreshToken, this.refreshTokenName);
-    return Promise.resolve(resToken);
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(res => {
+        this.setToken(res.token, this.accessTokenName);
+        this.setToken(res.refreshToken, this.refreshTokenName);
+        Promise.resolve(res);
+        window.location.reload();
+      });
   };
 
   logout = async () => {
     try {
-      await this.fetch(`${this.apiAddr}/token/revoke`, {
+      await this.fetch(`${this.corsAddr + this.apiAddr}/token/revoke`, {
         method: "POST"
       });
       localStorage.removeItem(this.accessTokenName);
@@ -74,6 +82,7 @@ export class AuthService {
       localStorage.removeItem(this.accessTokenName);
       localStorage.removeItem(this.refreshTokenName);
     }
+    window.location.reload();
   };
 
   register = async (nickname, password, firstName, lastName, email) => {
